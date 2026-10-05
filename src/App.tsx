@@ -609,7 +609,7 @@ Task:
         topP: 0.95,
       };
 
-      // Set output image size dynamically to heavily reduce output token cost
+      // 출력 이미지 크기를 지정해 출력 토큰 비용을 줄임
       if (targetModelId === 'gemini-3.1-flash-image-preview') {
           apiConfig.imageConfig = { imageSize: genSize };
       }
@@ -749,7 +749,7 @@ Task:
           // 4. Draw the punched translated layer over the pure original
           finalCtx?.drawImage(translatedCanvas, 0, 0);
           
-          // CRITICAL: Save final composition as highly compressed WebP to drastically reduce memory usage and file size
+          // 메모리와 파일 크기를 줄이려고 WebP로 저장
           const newResultData = finalCanvas.toDataURL('image/webp', 0.85);
           setMangaFiles(prev => prev.map(f => {
             if (f.id === targetFile.id) {
@@ -958,10 +958,8 @@ Task:
   };
 
   const endSelection = () => {
-    if (isSelecting && currentPath && currentPath.length > 2) {
-        // Auto-close path visually if we want, but logic assumes it's closed
-    } else if (isSelecting) {
-        setCurrentPath(null); // Clear if too short
+    if (isSelecting && (!currentPath || currentPath.length <= 2)) {
+        setCurrentPath(null); // 점이 세 개 미만이면 영역으로 보지 않음
     }
     setIsSelecting(false);
   };
